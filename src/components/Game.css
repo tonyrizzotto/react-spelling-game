@@ -1,0 +1,17 @@
+.input-column {
+  background-color: #eee;
+}
+
+.word-to-spell {
+  padding: 40px 0;
+  color: #999;
+  font-size: 70px;
+  text-align: center;
+}
+
+.correct {
+  color: green;
+}
+.wrong {
+  color: red;
+}
