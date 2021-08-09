@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Game.css';
 
+//Pull in 'data' prop from the App component
 const Game = ({ data }) => {
   //initialize state for selected data: selecting word length for later version
   const [gameData, setGameData] = useState(data.threeLetterWords);
@@ -33,28 +34,25 @@ const Game = ({ data }) => {
 
     // make sure input doesn't go longer than the word
 
-    //display each word as an individual span
-    brokenWord.forEach((letter) => {
+    //display each letter as an individual span
+    brokenWord.forEach((letter, index) => {
       //create a span element
       let span = document.createElement('SPAN');
 
       // validate each letter from the input to determine color
-      inputArray.forEach((i) => {
+      if (inputArray[index] === undefined) {
+        //if there are no entries, remove any applied classes
+        span.classList.remove(...span.classList);
+      } else {
         //apply correct color class to the letter span
-        if (
-          i === letter &&
-          inputArray.indexOf(i) === brokenWord.indexOf(letter)
-        ) {
+        if (inputArray[index] === letter) {
           // if correct, apply green
           span.classList.add('correct');
-        } else if (
-          i !== letter &&
-          inputArray.indexOf(i) === brokenWord.indexOf(letter)
-        ) {
+        } else {
           // if incorrect, apply red
           span.classList.add('wrong');
         }
-      });
+      }
 
       //display each letter in the span
       span.innerText = letter;
