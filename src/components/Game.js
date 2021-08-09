@@ -20,10 +20,10 @@ const Game = ({ data }) => {
 
   //write a function to place the word into the div
   function displayWord(word, input) {
-    //this function should place the word and the HTML into the div
+    //get the div for the spans/letters
     let spanDiv = document.getElementById('word');
 
-    //clear the div to avoid duplicate placements
+    //clear the div to avoid duplicate placements on refresh
     spanDiv.innerHTML = '';
 
     //break the word into an array
@@ -40,15 +40,18 @@ const Game = ({ data }) => {
 
       // validate each letter from the input to determine color
       inputArray.forEach((i) => {
+        //apply correct color class to the letter span
         if (
           i === letter &&
           inputArray.indexOf(i) === brokenWord.indexOf(letter)
         ) {
+          // if correct, apply green
           span.classList.add('correct');
         } else if (
           i !== letter &&
           inputArray.indexOf(i) === brokenWord.indexOf(letter)
         ) {
+          // if incorrect, apply red
           span.classList.add('wrong');
         }
       });
