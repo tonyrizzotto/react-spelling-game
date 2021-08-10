@@ -2,24 +2,65 @@ import React, { useState, useEffect } from 'react';
 import './Game.css';
 
 //Pull in 'data' prop from the App component
-const Game = ({ data }) => {
+const Game = ({ data, title }) => {
   //initialize state for selected data: selecting word length for later version
   const [gameData, setGameData] = useState(data.threeLetterWords);
-
   //set the displayed question to a random index in the game data
   const [currentQuestion, setCurrentQuestion] = useState(
     gameData[Math.floor(Math.random() * gameData.length)]
   );
-
   //initilize state for a controlled input
   const [input, setInput] = useState('');
+
+  // initialize state for score
+  const [score, setScore] = useState(0);
 
   //side effect to monitor current word
   useEffect(() => {
     displayWord(currentQuestion.name, input);
   }, [input, currentQuestion]);
 
-  //write a function to place the word into the div
+  function resetQuestion() {
+    let index = gameData.indexOf(currentQuestion);
+    gameData.splice(index, 1);
+    setCurrentQuestion(gameData[Math.floor(Math.random() * gameData.length)]);
+  }
+  /**Validates if the input is correct, if so, it will update the score and move on to the next question */
+  function onInputSubmit() {
+    let message = document.getElementById('message');
+
+    if (currentQuestion.name === input) {
+      //increment score
+      setScore(score + 1);
+      // show a sucess message and reset input
+      message.classList.add('correct');
+      message.innerText = "Great Job! Let's try another one!";
+      //reset the input and question
+      setTimeout(() => {
+        //call resetQuestion
+        resetQuestion();
+        setInput('');
+        message.innerText = '';
+      }, 3000);
+
+      //change the question, remove currentQuestion from data and show next question
+    } else if (currentQuestion !== input) {
+      //display an error message
+      message.classList.add('wrong');
+      message.innerText = 'Incorrect spelling. Please try again!';
+
+      setTimeout(() => {
+        // after a 3 seconds, reset the input and remove error message
+        setInput('');
+        message.classList.remove('wrong');
+        message.innerText = '';
+      }, 3000);
+    }
+  }
+  /**@description This function displays a word and validates the input against the choosen word
+   * @param word - this is the randomly chosen word to spell.
+   * @param input - the input that the user is typing into the field
+   */
   function displayWord(word, input) {
     //get the div for the spans/letters
     let spanDiv = document.getElementById('word');
@@ -31,8 +72,6 @@ const Game = ({ data }) => {
     let brokenWord = word.split('');
     // store the input into an array
     let inputArray = input.split('');
-
-    // make sure input doesn't go longer than the word
 
     //display each letter as an individual span
     brokenWord.forEach((letter, index) => {
@@ -60,9 +99,19 @@ const Game = ({ data }) => {
       spanDiv.appendChild(span);
     });
   }
+  //End displayWord function
 
   return (
     <div className="ui vertically divided grid">
+      {/* This is the header */}
+      <div
+        className="ui header"
+        style={{ textAlign: 'center', margin: '3em 0' }}
+      >
+        <h1>{title}</h1>
+        <h3>Score: {score}</h3>
+      </div>
+
       <div className="two column row">
         <div className="column">
           <img src={currentQuestion.picture} alt={currentQuestion.name} />
@@ -78,8 +127,11 @@ const Game = ({ data }) => {
                   setInput(e.target.value);
                 }}
               />
-              <button className="button">Submit</button>
+              <button className="button" onClick={onInputSubmit}>
+                Submit
+              </button>
             </div>
+            <div id="message"></div>
           </div>
         </div>
         <div className="column">
