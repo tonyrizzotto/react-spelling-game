@@ -33,7 +33,7 @@ const data = {
       desc: 'This is a picture of a duck.',
     },
     {
-      name: 'liol',
+      name: 'lion',
       picture:
         'https://images.unsplash.com/photo-1567732310772-bb589efdbb03?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1053&q=80',
       desc: 'This is a picture of a lion.',

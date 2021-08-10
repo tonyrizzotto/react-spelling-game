@@ -15,6 +15,11 @@ const Game = ({ data, title }) => {
   // initialize state for score
   const [score, setScore] = useState(0);
 
+  // a side effect of changing the difficulty: change question
+  useEffect(() => {
+    setCurrentQuestion(gameData[Math.floor(Math.random() * gameData.length)]);
+  }, [gameData]);
+
   //side effect to monitor current word
   useEffect(() => {
     displayWord(currentQuestion.name, input);
@@ -32,9 +37,11 @@ const Game = ({ data, title }) => {
     if (currentQuestion.name === input) {
       //increment score
       setScore(score + 1);
+
       // show a sucess message and reset input
       message.classList.add('correct');
       message.innerText = "Great Job! Let's try another one!";
+
       //reset the input and question
       setTimeout(() => {
         //call resetQuestion
@@ -110,6 +117,20 @@ const Game = ({ data, title }) => {
       >
         <h1>{title}</h1>
         <h3>Score: {score}</h3>
+        <div>
+          <button
+            className="button"
+            onClick={() => setGameData(data.threeLetterWords)}
+          >
+            3-Letter Words
+          </button>
+          <button
+            className="button"
+            onClick={() => setGameData(data.fourLetterWords)}
+          >
+            4-Letter Words
+          </button>
+        </div>
       </div>
 
       <div className="two column row">
