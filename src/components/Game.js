@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Game.css';
 
 //Pull in 'data' prop from the App component
@@ -15,6 +15,9 @@ const Game = ({ data, title }) => {
   // initialize state for score
   const [score, setScore] = useState(0);
 
+  //initialize an input ref
+  const inputRef = useRef();
+
   // a side effect of changing the difficulty: change question
   useEffect(() => {
     setCurrentQuestion(gameData[Math.floor(Math.random() * gameData.length)]);
@@ -23,6 +26,8 @@ const Game = ({ data, title }) => {
   //side effect to monitor current word
   useEffect(() => {
     displayWord(currentQuestion.name, input);
+    // will always focus on the input upon render
+    inputRef.current.focus();
   }, [input, currentQuestion]);
 
   function resetQuestion() {
@@ -147,6 +152,7 @@ const Game = ({ data, title }) => {
                 onChange={(e) => {
                   setInput(e.target.value);
                 }}
+                ref={inputRef}
               />
               <button className="button" onClick={onInputSubmit}>
                 Submit
